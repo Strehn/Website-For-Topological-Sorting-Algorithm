@@ -1,0 +1,220 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="general.css">
+    <script type="text/javascript" src="../general.js"></script>
+    <script type="text/javascript" src="../tableFunctions.js"></script>
+    <script type="text/javascript" src="../headerFunction.js"></script>
+    <script type="text/javascript" src="../pseudocodeFunctions.js"></script>
+
+    <script type="text/javascript">
+        // Put our scripts here to do the topological sort
+
+        // - VARIABLES -
+        var numStacks = 5;
+        var stacks = [1, 1, 1, 1, 1];
+        var maxHeight = 25;
+        var turn = 0;
+
+        var myTableId = "myTable";
+        var playerTableId = "playerTable";
+        var hintTableId = "hintTable";
+        var myPseudocodeTableId = "myPseudocodeTable";
+
+        var showHints = false;
+
+        function buttonClicked(stack, value) {
+            for (y = value; y <= stacks[stack]; y++)
+                deleteCell(myTableId, stack, y);
+            setStackHeight(stack, value - 1);
+            var coinsLeft = 0;
+            var i;
+            for (var i = 0; i < numStacks; ++i)
+                coinsLeft += stacks[i];
+            if (coinsLeft == 0) {
+                sayIt("Well done Player " + (turn + 1));
+                return;
+            }
+            turn = (turn + 1) % 2;
+            if (turn == 0) {
+                setCellColor(playerTableId, 0, 0, "#F1B300");
+                setCellColor(playerTableId, 1, 0, "white");
+            }
+            else {
+                setCellColor(playerTableId, 1, 0, "#F1B300");
+                setCellColor(playerTableId, 0, 0, "white");
+            }
+            hint();
+        }
+
+        function setStackHeight(stack, height) {
+            stacks[stack] = height;
+            setCell(myTableId, stack, 0, height + "=" + height.toString(2));
+            centerCell(myTableId, stack, 0);
+        }
+
+        function showHintsBar() {
+            showHints = !showHints;
+            var element = document.getElementById("hintButton");
+            if (showHints)
+                element.style.backgroundColor = "#F1B300";
+            else
+                element.style.backgroundColor = "#808080";
+            hint();
+        }
+
+        function hint() {
+            if (!showHints) {
+                setCell(hintTableId, 0, 0, "");
+                return;
+            }
+
+            var sumString = "";
+            var nimsum = 0;
+            var decString = "";
+            var i;
+            for (i = 0; i < numStacks; ++i) {
+                decString = "" + stacks[i];
+                while (decString.length < 2) {
+                    //decString = " " + decString;
+                    decString = "0" + decString;
+                }
+                sumString = sumString + decString + ":"
+                decString = "" + (stacks[i] >>> 0).toString(2);
+                while (decString.length < 5) {
+                    //decString = " " + decString;
+                    decString = "0" + decString;
+                }
+                sumString = sumString + decString + "<BR>";
+                nimsum = nimsum ^ stacks[i];
+            }
+
+            decString = "" + nimsum;
+            while (decString.length < 2) {
+                //decString = " " + decString;
+                decString = "0" + decString;
+            }
+            sumString = sumString + decString + ":"
+            decString = "" + (nimsum >>> 0).toString(2);
+            while (decString.length < 5) {
+                //decString = " " + decString;
+                decString = "0" + decString;
+            }
+            sumString = sumString + decString + " <- Nim Sum<BR><BR>";
+
+            if (nimsum == 0) {
+                sumString = sumString + "The Nim sum is 0. All you can do is hope your opponent makes a mistake. <BR>";
+            }
+            else {
+                var nimsumLength = (nimsum).toString(2).length;
+                for (i = 0; i < numStacks; ++i) {
+                    var stacksAsString = stacks[i].toString(2);
+                    if (nimsumLength <= stacksAsString.length && stacksAsString.charAt(stacksAsString.length - nimsumLength) == "1")
+                        break;
+                }
+
+                sumString = sumString + ("Let d be the position of the most significant bit in NimSum.<BR>");
+                sumString = sumString + ("Choose a stack xk such that it’s most significant bit is also in position d. (Like stack " + (i + 1) + ")<BR><BR>");
+                var yk = stacks[i] ^ nimsum;
+                sumString = sumString + ("yk = NimSum XOR xk (" + yk + ").<BR>");
+                sumString = sumString + ("Remove all but yk coins from the stack (leave " + (yk) + " coins in stack " + (i + 1) + ").<BR>");
+            }
+            setCell(hintTableId, 0, 0, sumString);
+        }
+
+        function createButtons() {
+            var i;
+            var x;
+            var y;
+
+            createTableWithWidth(hintTableId, 1, 1, "100%");
+            var myTable = document.createElement(hintTableId);
+            myTable.style.whiteSpace = "pre";
+
+            turn = 0;
+            createTableWithWidth(playerTableId, 2, 1, "100%");
+            setCell(playerTableId, 0, 0, "Player 1");
+            centerCell(playerTableId, 0, 0);
+            setCell(playerTableId, 1, 0, "Player 2");
+            centerCell(playerTableId, 1, 0);
+            setCellColor(playerTableId, 0, 0, "#F1B300");
+
+            createTableWithWidth(myTableId, numStacks, maxHeight + 2, "100%");
+
+            for (x = 0; x < numStacks; x++) {
+                setStackHeight(x, getRandomCount(maxHeight));
+                for (y = 1; y <= stacks[x]; y++) {
+                    var btn = document.createElement('input');
+                    btn.type = "button";
+                    btn.className = "button button4";
+                    btn.setAttribute("id", "button" + x + "_" + y);
+                    btn.value = y;
+                    // Note: If we just use y, it always has the value of the max of the buttons becasue y is visible to the callback function and at execution time, so it uses the last iterated value.
+                    // Usin an IIFE (closer) we effectively created a 'private' variable seen and preserved by each callback function.
+                    btn.onclick = (function (x, y) {
+                        return function () {
+                            buttonClicked(x, y);
+                        }
+                    })(x, y);
+                    btn.style["width"] = "100%";
+                    setCellAsObject(myTableId, x, y, btn);
+                }
+
+            }
+            hint();
+        }
+
+        function welcome() {
+
+        }
+
+        
+    </script>
+</head>
+
+
+<body onload="welcome()" data-gr-c-s-loaded="true">
+    <!-- Create The Header -->
+    <script>createHeader("Topological Sort (DFS)");</script>
+
+    <!-- Content of the Header -->
+    <p>
+        "This is the "
+
+        <a target="\&quot;_blank\&quot;" href="\&quot;https://en.wikipedia.org/wiki/Topological_sorting;">Topological Sort </a>
+
+        "implemented using "
+
+        <a target="\&quot;_blank\&quot;" href="\&quot;https://en.wikipedia.org/wiki/Topological_sorting;">Depth First Search. </a>
+
+        "A topological sort of a directed graph is a linear ordering of its vertices such that for every
+        directed edge uv from vertex u to vertex v, u comes before v in the ordering. For instance, the vertices of the graph may
+        represent tasks to be performed, and the edges may represent constraints that one task must be performed before another;
+        in this application, a topological ordering is just a valid sequence for the tasks. A topological ordering is possible if
+        and only if the graph has no directed cycles, that is, if it is a directed acyclic graph (DAG). Any DAG has at least one topological
+        ordering, and algorithms are known for constructing a topological ordering of any DAG in linear time."
+    
+    <!-- Line Break -->
+    <br />
+
+        "Click the button to generate a new graph, then click the nodes in order to add them to the stack."
+    </p>
+
+    <script>//welcome();</script>
+
+    <script>createButtons();</script>
+
+    Your HTML code goes here
+    <script>document.getElementById("KCapacity").onchange = function () { funKCapacity() };</script>
+    <BR>
+    <input style="visibility:hidden;" type="button" id="ButtonShowMe" value="ShowMe"
+           onclick="nextStep()" disabled>
+    <input style="visibility:hidden;" type="button" id="ButtonYes" value="Yes" onclick="choseYes()"
+           disabled>
+    <input style="visibility:hidden;" type="button" id="ButtonNo" value="No" onclick="choseNo()"
+           disabled>
+
+</body>
+</html>
