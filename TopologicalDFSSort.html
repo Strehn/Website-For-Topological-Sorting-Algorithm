@@ -1,16 +1,18 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+    <!-- This was given by DR. BC-->
     <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- Chrome browser will display response in the form of html page by using above line. -->
     <link rel="stylesheet" href="general.css">
     <script type="text/javascript" src="../general.js"></script>
     <script type="text/javascript" src="../tableFunctions.js"></script>
     <script type="text/javascript" src="../headerFunction.js"></script>
     <script type="text/javascript" src="../pseudocodeFunctions.js"></script>
 
-    <script type="text/javascript">
-        // Put our scripts here to do the topological sort
+    <!-- Here is where we can make our own "script" It is in Javascript-->
+    <script type="text/javascript">// Put our scripts here to do the topological sort
 
         // - VARIABLES -
         var numStacks = 5;
@@ -177,13 +179,11 @@
         }
 
         function welcome() {
-        }
-
-    </script>
+        }</script>
 </head>
 
 
-<body onload="welcome()" data-gr-c-s-loaded="true">
+<body onload="welcome()">
     <!-- Create The Header -->
     <script>createHeader("Topological Sort (DFS)");</script>
 
@@ -191,10 +191,12 @@
     <p>
         This is the
 
+        <!-- Makes the text a hyperlink -->
         <a target="\&quot;_blank\&quot;" href="\&quot;https://en.wikipedia.org/wiki/Topological_sorting;">Topological Sort </a>
 
         implemented using
 
+        <!-- Makes the text a hyperlink -->
         <a target="\&quot;_blank\&quot;" href="\&quot;https://en.wikipedia.org/wiki/Topological_sorting;">Depth First Search. </a>
 
         A topological sort of a directed graph is a linear ordering of its vertices such that for every
@@ -204,7 +206,7 @@
         and only if the graph has no directed cycles, that is, if it is a directed acyclic graph (DAG). Any DAG has at least one topological
         ordering, and algorithms are known for constructing a topological ordering of any DAG in linear time.
 
-        c
+        <!-- Line Breaks -->
         <br />
         <br />
 
@@ -215,7 +217,11 @@
 
     <script>createButtons();</script>
 
-    <!-- Your HTML code goes here -->
+
+    <!-- Our HTML code goes here -->
+
+
+    <!-- This was given by DR. BC -->
     <script>document.getElementById("KCapacity").onchange = function () { funKCapacity() };</script>
     <BR>
     <input style="visibility:hidden;" type="button" id="ButtonShowMe" value="ShowMe"
