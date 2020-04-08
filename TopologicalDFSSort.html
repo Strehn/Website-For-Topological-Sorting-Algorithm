@@ -25,6 +25,8 @@
 
         var showHints = false;
 
+
+        // Function to register user input
         function buttonClicked(stack, value) {
             for (y = value; y <= stacks[stack]; y++)
                 deleteCell(myTableId, stack, y);
@@ -49,12 +51,14 @@
             hint();
         }
 
+        // Function to update the stack
         function setStackHeight(stack, height) {
             stacks[stack] = height;
             setCell(myTableId, stack, 0, height + "=" + height.toString(2));
             centerCell(myTableId, stack, 0);
         }
 
+        // Function to show the hints after button is pressed
         function showHintsBar() {
             showHints = !showHints;
             var element = document.getElementById("hintButton");
@@ -65,12 +69,15 @@
             hint();
         }
 
+        // Function to update the hint table with the hint
         function hint() {
             if (!showHints) {
                 setCell(hintTableId, 0, 0, "");
                 return;
             }
 
+
+            // This is the nim sum example code for reference
             var sumString = "";
             var nimsum = 0;
             var decString = "";
@@ -121,9 +128,12 @@
                 sumString = sumString + ("yk = NimSum XOR xk (" + yk + ").<BR>");
                 sumString = sumString + ("Remove all but yk coins from the stack (leave " + (yk) + " coins in stack " + (i + 1) + ").<BR>");
             }
+
+
             setCell(hintTableId, 0, 0, sumString);
         }
 
+        // Function to create all the buttons on the website
         function createButtons() {
             var i;
             var x;
@@ -167,10 +177,8 @@
         }
 
         function welcome() {
-
         }
 
-        
     </script>
 </head>
 
@@ -181,32 +189,33 @@
 
     <!-- Content of the Header -->
     <p>
-        "This is the "
+        This is the
 
         <a target="\&quot;_blank\&quot;" href="\&quot;https://en.wikipedia.org/wiki/Topological_sorting;">Topological Sort </a>
 
-        "implemented using "
+        implemented using
 
         <a target="\&quot;_blank\&quot;" href="\&quot;https://en.wikipedia.org/wiki/Topological_sorting;">Depth First Search. </a>
 
-        "A topological sort of a directed graph is a linear ordering of its vertices such that for every
+        A topological sort of a directed graph is a linear ordering of its vertices such that for every
         directed edge uv from vertex u to vertex v, u comes before v in the ordering. For instance, the vertices of the graph may
         represent tasks to be performed, and the edges may represent constraints that one task must be performed before another;
         in this application, a topological ordering is just a valid sequence for the tasks. A topological ordering is possible if
         and only if the graph has no directed cycles, that is, if it is a directed acyclic graph (DAG). Any DAG has at least one topological
-        ordering, and algorithms are known for constructing a topological ordering of any DAG in linear time."
-    
-    <!-- Line Break -->
-    <br />
+        ordering, and algorithms are known for constructing a topological ordering of any DAG in linear time.
 
-        "Click the button to generate a new graph, then click the nodes in order to add them to the stack."
+        c
+        <br />
+        <br />
+
+        Click the button to generate a new graph, then click the nodes in order to add them to the stack.
     </p>
 
     <script>//welcome();</script>
 
     <script>createButtons();</script>
 
-    Your HTML code goes here
+    <!-- Your HTML code goes here -->
     <script>document.getElementById("KCapacity").onchange = function () { funKCapacity() };</script>
     <BR>
     <input style="visibility:hidden;" type="button" id="ButtonShowMe" value="ShowMe"
