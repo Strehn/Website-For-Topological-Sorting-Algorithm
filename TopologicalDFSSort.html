@@ -33,6 +33,12 @@
             createGraph();
         }
 
+        //Function to generate a random graph of x nodes
+        function createGraph() {
+            currentNode = 0;
+
+        }
+
         // Function to register user input
         function buttonClicked(stack, value) {
             for (y = value; y <= stacks[stack]; y++)
@@ -225,9 +231,7 @@
     <!-- Button for how many elements in graph -->
     How many Nodes should be in the graph?:
     <select style="width: 80px" id="NumNodes" name="NumNodes">
-        <option selected="">1</option>
-        <option>2</option>
-        <option>3</option>
+        <option selected="">3</option>
         <option>4</option>
         <option>5</option>
         <option>6</option>
