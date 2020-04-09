@@ -34,9 +34,28 @@
         }
 
         //Function to generate a random graph of x nodes
+        //I think this is going to be the main driver of our algorithm
         function createGraph() {
             currentNode = 0;
+            // For the number of nodes, randomly choose which nodes they point to
+            // print the random nodes they point to
+            // allow user to edit the random nodes
 
+            //Update PseudocodeTable with the steps we are doing
+            createPseudocodeTable(myPseudocodeTableID);
+            appendPseudocodeTable(myPseudocodeTableID, "The Algorithm is doing....", "Done");
+        }
+
+        function nextNode() {
+            currentNode++;
+            if (currentNode > numNodes) {
+                for (x = 1; x <= numNodes; x++;)
+                {
+                    setCellColor(myTableId, x, currentNode - 1, "white");
+                    setCellColor(myTableId, currentNode - 1, x, "white");
+                }
+                appendPseudocodeTable(myPseudocodeTableID, "Al")
+            }
         }
 
         // Function to register user input
