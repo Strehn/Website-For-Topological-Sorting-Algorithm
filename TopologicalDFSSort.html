@@ -247,7 +247,6 @@
     <!-- -->
     <!-- Our HTML code goes here -->
     <!-- -->
-
     <!-- Button for how many elements in graph -->
     How many Nodes should be in the graph?:
     <select style="width: 80px" id="NumNodes" name="NumNodes">
@@ -260,6 +259,15 @@
         <option>9</option>
     </select>
     <script>document.getElementById("NumNodes").onchange = function () { funNumElements() };</script>
+    <br />
+
+    <!-- Button for toggeling show hint  -->
+    Show Hint?:
+    <select style="width: 80px" id="showHints" name="showHints">
+        <option selected="">No</option>
+        <option>Yes</option>
+    </select>
+    <script>document.getElementById("showHints").onchange = function () { hint() };</script>
     <br />
 
     <!-- This was given by DR. BC -->
