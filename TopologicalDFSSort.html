@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿<!--
+     Topological Sorting (DFS)
+     Written by: Sam Spalding, Sydney Petrehn
+     April 16 2020
+-->
+
+<!DOCTYPE html>
 <html>
 <head>
     <!-- This was given by DR. BC-->
@@ -12,213 +18,260 @@
     <script type="text/javascript" src="../pseudocodeFunctions.js"></script>
 
     <!-- Here is where we can make our own "script" It is in Javascript-->
-    <script type="text/javascript">// Put our scripts here to do the topological sort
-
+    <script type="text/javascript">
         // - VARIABLES -
-        var numStacks = 5;
-        var stacks = [1, 1, 1, 1, 1];
-        var maxHeight = 25;
-        var turn = 0;
+        var currentState = 0;
+        var numNodes = 0;
 
-        var myTableId = "myTable";
-        var playerTableId = "playerTable";
-        var hintTableId = "hintTable";
-        var myPseudocodeTableId = "myPseudocodeTable";
-
-        var showHints = false;
-
-        // Function to get the number of nodes for the graph
-        function funNumNodes() {
-            numNodes = parseInt(document.getElementById("NumNodes").value, 10)
+        // Function to get the number of nodes for the graph Use this as the 'Main'
+        function getNodes() {
+            numNodes = parseInt(document.getElementById("NumNodes").value);
+            createTableWithWidth(myTableId, SString.length + 1, 3, 90);
             createGraph();
+            createPseudoTable();
+            showElement("showHint");
+            showElement("ButtonReset");
+            showElement("ButtonShowMe");
+            showElement("ButtonYes");
+            showElement("ButtonNo");
+            createPseudocodeTable(myPseudocodeTableId);
+            appendPseudocodeTable(myPseudocodeTableId, "\n the first pseudocode thing goes here", "Show Me");
+            showElement("guess");
         }
 
-        //Function to generate a random graph of x nodes
-        //I think this is going to be the main driver of our algorithm
-        function createGraph() {
-            currentNode = 0;
-            // For the number of nodes, randomly choose which nodes they point to
-            // print the random nodes they point to
-            // allow user to edit the random nodes
 
-            //Update PseudocodeTable with the steps we are doing
-            createPseudocodeTable(myPseudocodeTableID);
-            appendPseudocodeTable(myPseudocodeTableID, "The Algorithm is doing....", "Done");
+        function getString() {
+
+            Key = String(document.getElementById("key").value);
+            SString = String(document.getElementById("sString").value);
+            testUser();
+            createTableWithWidth(myTableId, SString.length + 1, 3, 90);
+            printSearch(0, 0, "white");
+
+        }
+        
+
+        async function createSearch() {
+            LocationMatches = ""
+            LocationGuesses = String(document.getElementById("locationGuesses").value) + " ";
+            var i = -1;
+            hideElement("ButtonShowMeSolution");
+            printSearchCheck(0, 0, "yellow", 0);
+            createPseudocodeTable(myPseudocodeTableId);
+            appendPseudocode(myPseudocodeTableId, "For needle position = 0 to length of haystack – length of needle.\n\tFor each letter in the needle");
+            appendPseudocodeQuestion(myPseudocodeTableId, "\t\tIs this a match?", "Yes", "No");
         }
 
-        function nextNode() {
-            currentNode++;
-            if (currentNode > numNodes) {
-                for (x = 1; x <= numNodes; x++;)
-                {
-                    setCellColor(myTableId, x, currentNode - 1, "white");
-                    setCellColor(myTableId, currentNode - 1, x, "white");
+        async function createSearchSolution() {
+            LocationMatches = ""
+            LocationGuesses = String(document.getElementById("locationGuesses").value) + " ";
+            var i = -1;
+            printSearchCheck(0, 0, "yellow", 0);
+            let bFSMres = await bFSM(i + 1);
+            hideElement("ButtonShowMeSolution");
+            appendPseudocode(myPseudocodeTableId, "String matches found at: " + LocationMatches);
+            appendPseudocode(myPseudocodeTableId, "Press \"Reset\" to start over.");
+        }
+
+
+        async function bFSM(start) {
+            var i, j;
+            for (i = start; i <= (SString.length - Key.length); i++) {
+                let delayres = await delay(1000);
+                j = 0;
+                while (j < Key.length && Key[j] == SString[i + j]) {
+                    printSearchCheck(0, i, "green", j);
+                    let delayres = await delay(1000);
+                    j++;
                 }
-                appendPseudocodeTable(myPseudocodeTableID, "Algorithm has finished. Do you want to go again?", "Reset");
-                return;
+                if (j == Key.length) {
+                    printSearch(0, i, "green");
+                    LocationMatches += i + " ";
+                    let delayres = await delay(1500);
+                }
+                else {
+                    printSearchCheck(0, i, "red", j);
+                }
+
             }
         }
 
-        // Function to register user input
-        function buttonClicked(stack, value) {
-            for (y = value; y <= stacks[stack]; y++)
-                deleteCell(myTableId, stack, y);
-            setStackHeight(stack, value - 1);
-            var coinsLeft = 0;
-            var i;
-            for (var i = 0; i < numStacks; ++i)
-                coinsLeft += stacks[i];
-            if (coinsLeft == 0) {
-                sayIt("Well done Player " + (turn + 1));
-                return;
+        function choseNo() {
+            bFSMStep(false);
+        }
+
+        function choseYes() {
+            bFSMStep(true);
+        }
+
+        var curr = 0;
+
+        async function bFSMStep(answer) {
+            if (currentState <= (SString.length - Key.length)) {
+                if (curr < Key.length && Key[curr] == SString[currentState + curr]) {
+                    if (answer == true) {
+                        printSearchCheck(0, currentState, "green", curr);
+                        appendPseudocode(myPseudocodeTableId, "\t\tCorrect, it is a Match");
+                    }
+                    else {
+                        printSearchCheck(0, currentState, "red", curr);
+                        appendPseudocode(myPseudocodeTableId, "\t\tIncorrect, it is a Match");
+
+                    }
+                    curr++;
+                    let delayres = await delay(1000);
+
+                }
+                else {
+                    if (answer == false) {
+                        printSearchCheck(0, currentState, "green", curr);
+                        appendPseudocode(myPseudocodeTableId, "\t\tCorrect, it is not a Match");
+
+                    }
+                    else {
+                        printSearchCheck(0, currentState, "red", curr);
+                        appendPseudocode(myPseudocodeTableId, "\t\tIncorrect, it is not a Match");
+
+                    }
+                    curr = 0;
+                    let delayres = await delay(1000);
+                    currentState++;
+                    appendPseudocode(myPseudocodeTableId, "\tposition = " + currentState);
+
+
+                }
+
+
+
+                if (curr == Key.length) {
+                    printSearch(0, currentState, "green");
+                    LocationMatches += currentState + " ";
+                    appendPseudocode(myPseudocodeTableId, "\tLength of matches equals length of needle");
+                    appendPseudocode(myPseudocodeTableId, "\tSolution found at position: " + currentState);
+                    currentState++;
+                    appendPseudocode(myPseudocodeTableId, "\tposition = " + currentState);
+                    curr = 0;
+                    let delayres = await delay(2000);
+
+
+                }
+                if (currentState <= (SString.length - Key.length)) {
+                    printSearchCheck(0, currentState, "yellow", curr);
+                    if (curr == 0) {
+                        appendPseudocode(myPseudocodeTableId, "\tFor each letter in the needle");
+
+                    }
+                    appendPseudocode(myPseudocodeTableId, "\t\tIs this a match?");
+                }
+                else {
+                    currentState = 0;
+                    hideElement("ButtonYes");
+                    hideElement("ButtonNo");
+                    checkAnswers();
+                }
+
+
+
             }
-            turn = (turn + 1) % 2;
-            if (turn == 0) {
-                setCellColor(playerTableId, 0, 0, "#F1B300");
-                setCellColor(playerTableId, 1, 0, "white");
+
+        }
+
+
+        function checkAnswers() {
+
+            if (LocationMatches.localeCompare(LocationGuesses) == 0) {
+                appendPseudocode(myPseudocodeTableId, "String matches found at: " + LocationMatches);
+                appendPseudocodeTable(myPseudocodeTableId, "Your match locations are correct, press \"Reset\" to start over. Press \"Solution\" to see the algorithm run again", "Retry");
+                showElement("ButtonShowMeSolution", "Solution");
             }
             else {
-                setCellColor(playerTableId, 1, 0, "#F1B300");
-                setCellColor(playerTableId, 0, 0, "white");
+                appendPseudocodeTable(myPseudocodeTableId, "Your match location. guesses are incorrect, change your location guesses and press \"Retry\" to try algorithm again. Press \"Solution\" to see the algorithm run again", "Retry");
+                showElement("ButtonShowMeSolution", "Solution");
             }
-            hint();
         }
 
-        // Function to update the stack
-        function setStackHeight(stack, height) {
-            stacks[stack] = height;
-            setCell(myTableId, stack, 0, height + "=" + height.toString(2));
-            centerCell(myTableId, stack, 0);
+        async function delay(delayInms) {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    resolve(2);
+                }, delayInms);
+            });
         }
 
-        // Function to show the hints after button is pressed
-        function showHintsBar() {
-            showHints = !showHints;
-            var element = document.getElementById("hintButton");
-            if (showHints)
-                element.style.backgroundColor = "#F1B300";
-            else
-                element.style.backgroundColor = "#808080";
-            hint();
+
+        function printSearch(n, m, color) {
+            setCell(myTableId, 0, 1, "String");
+            setCell(myTableId, 0, 2, "Key");
+            setCellColor(myTableId, 0, 1, "yellow");
+            setCellColor(myTableId, 0, 2, "yellow");
+
+            clearSearchTable();
+
+            for (y = 0; y < SString.length; y++) {
+                setCell(myTableId, y + 1 + n, 1, SString[y]);
+                setCell(myTableId, y + 1 + n, 0, y);
+                setCellBorder(myTableId, y + 1 + n, 1, "1px solid black");
+            }
+            for (y = 0; y < Key.length; y++) {
+                setCell(myTableId, y + m + 1, 2, Key[y]);
+                setCellBorder(myTableId, y + m + 1, 2, "1px solid black");
+                setCellColor(myTableId, y + m + 1, 1, color);
+                setCellColor(myTableId, y + m + 1, 2, color);
+            }
         }
 
-        // Function to update the hint table with the hint
-        function hint() {
-            if (!showHints) {
-                setCell(hintTableId, 0, 0, "");
-                return;
+        function printSearchCheck(n, m, color, x) {
+            setCell(myTableId, 0, 1, "String");
+            setCell(myTableId, 0, 2, "Key");
+            setCellColor(myTableId, 0, 1, "yellow");
+            setCellColor(myTableId, 0, 2, "yellow");
+
+            clearSearchTable();
+
+            for (y = 0; y < SString.length; y++) {
+                setCell(myTableId, y + 1 + n, 1, SString[y]);
+                setCell(myTableId, y + 1 + n, 0, y);
+                setCellBorder(myTableId, y + 1 + n, 1, "1px solid black");
+
             }
-
-
-            // This is the nim sum example code for reference
-            var sumString = "";
-            var nimsum = 0;
-            var decString = "";
-            var i;
-            for (i = 0; i < numStacks; ++i) {
-                decString = "" + stacks[i];
-                while (decString.length < 2) {
-                    //decString = " " + decString;
-                    decString = "0" + decString;
-                }
-                sumString = sumString + decString + ":"
-                decString = "" + (stacks[i] >>> 0).toString(2);
-                while (decString.length < 5) {
-                    //decString = " " + decString;
-                    decString = "0" + decString;
-                }
-                sumString = sumString + decString + "<BR>";
-                nimsum = nimsum ^ stacks[i];
+            for (y = 0; y < Key.length; y++) {
+                setCell(myTableId, y + m + 1, 2, Key[y]);
+                setCellBorder(myTableId, y + m + 1, 2, "1px solid black");
             }
-
-            decString = "" + nimsum;
-            while (decString.length < 2) {
-                //decString = " " + decString;
-                decString = "0" + decString;
-            }
-            sumString = sumString + decString + ":"
-            decString = "" + (nimsum >>> 0).toString(2);
-            while (decString.length < 5) {
-                //decString = " " + decString;
-                decString = "0" + decString;
-            }
-            sumString = sumString + decString + " <- Nim Sum<BR><BR>";
-
-            if (nimsum == 0) {
-                sumString = sumString + "The Nim sum is 0. All you can do is hope your opponent makes a mistake. <BR>";
-            }
-            else {
-                var nimsumLength = (nimsum).toString(2).length;
-                for (i = 0; i < numStacks; ++i) {
-                    var stacksAsString = stacks[i].toString(2);
-                    if (nimsumLength <= stacksAsString.length && stacksAsString.charAt(stacksAsString.length - nimsumLength) == "1")
-                        break;
-                }
-
-                sumString = sumString + ("Let d be the position of the most significant bit in NimSum.<BR>");
-                sumString = sumString + ("Choose a stack xk such that it’s most significant bit is also in position d. (Like stack " + (i + 1) + ")<BR><BR>");
-                var yk = stacks[i] ^ nimsum;
-                sumString = sumString + ("yk = NimSum XOR xk (" + yk + ").<BR>");
-                sumString = sumString + ("Remove all but yk coins from the stack (leave " + (yk) + " coins in stack " + (i + 1) + ").<BR>");
-            }
-
-
-            setCell(hintTableId, 0, 0, sumString);
+            setCellColor(myTableId, x + m + 1, 1, color);
+            setCellColor(myTableId, x + m + 1, 2, color);
         }
 
-        // Function to create all the buttons on the website
-        function createButtons() {
-            var i;
-            var x;
-            var y;
+        function clearSearchTable() {
 
-            createTableWithWidth(hintTableId, 1, 1, "100%");
-            var myTable = document.createElement(hintTableId);
-            myTable.style.whiteSpace = "pre";
-
-            turn = 0;
-            createTableWithWidth(playerTableId, 2, 1, "100%");
-            setCell(playerTableId, 0, 0, "Player 1");
-            centerCell(playerTableId, 0, 0);
-            setCell(playerTableId, 1, 0, "Player 2");
-            centerCell(playerTableId, 1, 0);
-            setCellColor(playerTableId, 0, 0, "#F1B300");
-
-            createTableWithWidth(myTableId, numStacks, maxHeight + 2, "100%");
-
-            for (x = 0; x < numStacks; x++) {
-                setStackHeight(x, getRandomCount(maxHeight));
-                for (y = 1; y <= stacks[x]; y++) {
-                    var btn = document.createElement('input');
-                    btn.type = "button";
-                    btn.className = "button button4";
-                    btn.setAttribute("id", "button" + x + "_" + y);
-                    btn.value = y;
-                    // Note: If we just use y, it always has the value of the max of the buttons becasue y is visible to the callback function and at execution time, so it uses the last iterated value.
-                    // Usin an IIFE (closer) we effectively created a 'private' variable seen and preserved by each callback function.
-                    btn.onclick = (function (x, y) {
-                        return function () {
-                            buttonClicked(x, y);
-                        }
-                    })(x, y);
-                    btn.style["width"] = "100%";
-                    setCellAsObject(myTableId, x, y, btn);
-                }
+            for (y = 1; y <= SString.length; y++) {
+                setCell(myTableId, y, 2, "");
+                setCell(myTableId, y, 1, "");
+                setCell(myTableId, y, 0, "");
+                setCellBorder(myTableId, y, 2, "");
+                setCellBorder(myTableId, y, 1, "");
+                setCellBorder(myTableId, y, 0, "");
+                setCellColor(myTableId, y, 2, "white");
+                setCellColor(myTableId, y, 1, "white");
+                setCellColor(myTableId, y, 0, "white");
 
             }
-            hint();
         }
 
         function welcome() {
+            sayIt("A topological sort of a directed graph is a linear ordering of its verticies such that for every directed edge uv from vertex u to vertex v, u comes before v in the ordering. vertices such that for every directed edge uv from vertex u to vertex v, u comes before v in the ordering.A topological ordering is possible if and only if the graph has no directed cycles, that is, if it is a directed acyclic graph(DAG).Any DAG has at least one topological ordering, and algorithms are known for constructing a topological ordering of any DAG in linear time.");
+
         }</script>
 </head>
 
 
-<body onload="welcome()">
+<body onload="welcome()" data-gr-c-s-loaded="true">
     <!-- Create The Header -->
-    <script>createHeader("Topological Sort (DFS)");</script>
+    <script>
+        createHeader("Topological Sort (DFS)");
+    </script>
 
-    <!-- Content of the Header -->
+    <!-- Text About the Topological Sort @ the top -->
     <p>
         This is the
 
@@ -242,43 +295,40 @@
         <br />
     </p>
 
+    <table id="HeaderTableID" style="background-color: rgb(128, 128, 128); width: 100%;"></table>
+
     <script>//welcome();</script>
 
-    <!-- -->
-    <!-- Our HTML code goes here -->
-    <!-- -->
-    <!-- Button for how many elements in graph -->
-    How many Nodes should be in the graph?:
-    <select style="width: 80px" id="NumNodes" name="NumNodes">
-        <option selected="">3</option>
-        <option>4</option>
-        <option>5</option>
-        <option>6</option>
-        <option>7</option>
-        <option>8</option>
-        <option>9</option>
-    </select>
-    <script>document.getElementById("NumNodes").onchange = function () { funNumElements() };</script>
+    <form>
+
+        <!-- Button for how many elements in graph -->
+        <label for="NumNodes">Enter the number of nodes:</label><br>
+        <br />
+        <input type="number" step="1" pattern="\d+" />
+
+        <p> Once finished, click the "Generate Graph" button </p>
+    </form>
+
+    <!-- This is the "start button" and when clicked it gets the number of nodes then generates the graph -->
+    <input style="visibility:visible;" type="button" id="GraphSearch" value="Generate Graph" onclick="getNodes()" enabled="">
+
+    <br />
+    <br />
     <br />
 
     <!-- Button for toggeling show hint  -->
-    Show Hint?:
-    <select style="width: 80px" id="showHints" name="showHints">
-        <option selected="">No</option>
-        <option>Yes</option>
-    </select>
-    <script>document.getElementById("showHints").onchange = function () { hint() };</script>
-    <br />
+    <input style="visibility:hidden;" type="button" id="showHint" value="Show Hint" onclick="showHints()" enabled>
 
-    <!-- This was given by DR. BC -->
+    <!-- Button to reset the algorithm -->
+    <input style="visibility:hidden;" type="button" id="ButtonReset" value="Reset" onclick="location.reload()" enabled>
 
-    <BR>
-    <input style="visibility:hidden;" type="button" id="ButtonShowMe" value="ShowMe"
-           onclick="nextStep()" disabled>
-    <input style="visibility:hidden;" type="button" id="ButtonYes" value="Yes" onclick="choseYes()"
-           disabled>
-    <input style="visibility:hidden;" type="button" id="ButtonNo" value="No" onclick="choseNo()"
-           disabled>
+    <!-- Button to show hint -->
+    <input style="visibility:hidden;" type="button" id="ButtonShowMe" value="Hint" onclick="nextStep()" disabled>
+
+
+    <input style="visibility:hidden;" type="button" id="ButtonYes" value="Yes" onclick="choseYes()" disabled>
+
+    <input style="visibility:hidden;" type="button" id="ButtonNo" value="No" onclick="choseNo()" disabled>
 
 </body>
 
