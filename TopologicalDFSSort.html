@@ -20,24 +20,35 @@
     <!-- Here is where we can make our own "script" It is in Javascript-->
     <script type="text/javascript">
         // - VARIABLES -
-        var currentState = 0;
+        var currentState = 0; // used in searching through graph
         var numNodes = 0;
 
         // Function to get the number of nodes for the graph Use this as the 'Main'
+
         function getNodes() {
             numNodes = parseInt(document.getElementById("NumNodes").value);
             createTableWithWidth(myTableId, SString.length + 1, 3, 90);
-            createGraph();
-            createPseudoTable();
+            createPseudocodeTable(myPseudocodeTableId); //generates the Pseudocode Table
+            appendPseudocodeTable(myPseudocodeTableId, "\n the first pseudocode thing goes here", "Show Me");
+            showElement("guess"); // user guesses which node gets added to stack next
+            topSort();
+        }
+
+        // Function to start Topological Sort
+        function topSort() {
+            showRel();
+            //the graph gets generated here
+        }
+
+        // Function to show relevent buttons
+        function showRel() {
             showElement("showHint");
             showElement("ButtonReset");
             showElement("ButtonShowMe");
             showElement("ButtonYes");
             showElement("ButtonNo");
-            createPseudocodeTable(myPseudocodeTableId);
-            appendPseudocodeTable(myPseudocodeTableId, "\n the first pseudocode thing goes here", "Show Me");
-            showElement("guess");
         }
+
 
         function welcome() {
             sayIt("A topological sort of a directed graph is a linear ordering of its verticies such that for every directed edge uv from vertex u to vertex v, u comes before v in the ordering. vertices such that for every directed edge uv from vertex u to vertex v, u comes before v in the ordering.A topological ordering is possible if and only if the graph has no directed cycles, that is, if it is a directed acyclic graph(DAG).Any DAG has at least one topological ordering, and algorithms are known for constructing a topological ordering of any DAG in linear time.");
@@ -48,9 +59,7 @@
 
 <body onload="welcome()" data-gr-c-s-loaded="true">
     <!-- Create The Header -->
-    <script>
-        createHeader("Topological Sort (DFS)");
-    </script>
+    <script>createHeader("Topological Sort (DFS)");</script>
 
     <!-- Text About the Topological Sort @ the top -->
     <p>
@@ -95,6 +104,15 @@
 
     <br />
     <br />
+
+    <!-- This keeps track of the guess the user makes on what node is added to the stack next-->
+    <div id="guess" style="visibility:hidden;">
+        <label for="guess">Next Node In Stack Guess:</label>
+        <br>
+        <input type="text" name="guess" id="nodeGuess">
+        <br>
+    </div>
+
     <br />
 
     <!-- Button for toggeling show hint  -->
@@ -105,7 +123,6 @@
 
     <!-- Button to show hint -->
     <input style="visibility:hidden;" type="button" id="ButtonShowMe" value="Hint" onclick="nextStep()" disabled>
-
 
     <input style="visibility:hidden;" type="button" id="ButtonYes" value="Yes" onclick="choseYes()" disabled>
 
