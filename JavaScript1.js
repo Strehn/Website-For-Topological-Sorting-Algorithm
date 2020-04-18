@@ -151,7 +151,7 @@ Graph.prototype.topoSortUtil = function (vertex, visited, stack) {
 
 
 //Create an instance of a graph randomly 
-var arraySize = Math.floor(Math.random() * (10 - 3) + 3); //This will be user choice
+var arraySize = Math.floor(Math.random() * (11 - 4) + 4); //This will be user choice
 var graph = new Graph(arraySize);
 
 for (var i = 0; i < arraySize; i++) {
