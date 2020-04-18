@@ -11,49 +11,55 @@
     <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <!-- Chrome browser will display response in the form of html page by using above line. -->
+    <!-- We don't want these files
     <link rel="stylesheet" href="general.css">
     <script type="text/javascript" src="../general.js"></script>
     <script type="text/javascript" src="../tableFunctions.js"></script>
     <script type="text/javascript" src="../headerFunction.js"></script>
     <script type="text/javascript" src="../pseudocodeFunctions.js"></script>
-
+    -->
     <!-- Here is where we can make our own "script" It is in Javascript-->
     <script type="text/javascript">
-        // - VARIABLES -
-        var currentState = 0; // used in searching through graph
-        var numNodes = 0;
+        /*
+            // - VARIABLES -
+            var currentState = 0; // used in searching through graph
+            var numNodes = 0;
 
-        // Function to get the number of nodes for the graph Use this as the 'Main'
+            // Function to get the number of nodes for the graph Use this as the 'Main'
 
-        function getNodes() {
-            numNodes = parseInt(document.getElementById("NumNodes").value);
-            createTableWithWidth(myTableId, SString.length + 1, 3, 90);
-            createPseudocodeTable(myPseudocodeTableId); //generates the Pseudocode Table
-            appendPseudocodeTable(myPseudocodeTableId, "\n the first pseudocode thing goes here", "Show Me");
-            showElement("guess"); // user guesses which node gets added to stack next
-            topSort();
-        }
+            function getNodes() {
+                numNodes = parseInt(document.getElementById("NumNodes").value);
+                createTableWithWidth(myTableId, SString.length + 1, 3, 90);
+                createPseudocodeTable(myPseudocodeTableId); //generates the Pseudocode Table
+                appendPseudocodeTable(myPseudocodeTableId, "\n the first pseudocode thing goes here", "Show Me");
+                showElement("guess"); // user guesses which node gets added to stack next
+                topSort();
+            }
 
-        // Function to start Topological Sort
-        function topSort() {
-            showRel();
-            //the graph gets generated here
-        }
+            // Function to start Topological Sort
+            function topSort() {
+                showRel();
+                //the graph gets generated here
+            }
 
-        // Function to show relevent buttons
-        function showRel() {
-            showElement("showHint");
-            showElement("ButtonReset");
-            showElement("ButtonShowMe");
-            showElement("ButtonYes");
-            showElement("ButtonNo");
-        }
+            // Function to show relevent buttons
+            function showRel() {
+                showElement("showHint");
+                showElement("ButtonReset");
+                showElement("ButtonShowMe");
+                showElement("ButtonYes");
+                showElement("ButtonNo");
+            }
 
 
-        function welcome() {
-            sayIt("A topological sort of a directed graph is a linear ordering of its verticies such that for every directed edge uv from vertex u to vertex v, u comes before v in the ordering. vertices such that for every directed edge uv from vertex u to vertex v, u comes before v in the ordering.A topological ordering is possible if and only if the graph has no directed cycles, that is, if it is a directed acyclic graph(DAG).Any DAG has at least one topological ordering, and algorithms are known for constructing a topological ordering of any DAG in linear time.");
+            function welcome() {
+                sayIt("A topological sort of a directed graph is a linear ordering of its verticies such that for every directed edge uv from vertex u to vertex v, u comes before v in the ordering. vertices such that for every directed edge uv from vertex u to vertex v, u comes before v in the ordering.A topological ordering is possible if and only if the graph has no directed cycles, that is, if it is a directed acyclic graph(DAG).Any DAG has at least one topological ordering, and algorithms are known for constructing a topological ordering of any DAG in linear time.");
 
-        }</script>
+            }*/
+
+
+
+    </script>
 </head>
 
 

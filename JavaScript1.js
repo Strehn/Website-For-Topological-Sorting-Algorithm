@@ -149,30 +149,28 @@ Graph.prototype.topoSortUtil = function (vertex, visited, stack) {
 }
 //Create Graph class and function -- end
 
-//Create an instance of a graph
-var arraySize = 8; //Holds the number of vertices for the graph
-var graph = new Graph(arraySize); //Create a new instance of a graph
-var vertices = [0, 1, 2, 3, 4, 5, 6, 7]; //create an array of the vertices that will be using in the graph
 
-//For every element in the vertices array, use the addVertex function to add that vertex to the graph
-for (var i = 0; i < vertices.length; i++) {
-	graph.addVertex(vertices[i]);
+//Create an instance of a graph randomly 
+var arraySize = Math.floor(Math.random() * (10 - 3) + 3); //This will be user choice
+var graph = new Graph(arraySize);
+
+for (var i = 0; i < arraySize; i++) {
+
+	graph.addVertex(i);
+}
+for (var i = 0; i < arraySize; i++) {
+
+	for (var j = i + 1; j < arraySize; j++) {
+
+		if (Math.floor(Math.random() * 101) < 35){
+
+			graph.addEdge(i, j);
+        }
+    }
 }
 
-//Add directed edges between the vertices of the graph. addEdge(src, dest)
-graph.addEdge(0, 1);
-graph.addEdge(0, 2);
-graph.addEdge(0, 3);
-graph.addEdge(0, 4);
-graph.addEdge(1, 5);
-graph.addEdge(2, 4);
-graph.addEdge(4, 6);
-graph.addEdge(5, 7);
+//Create an instance of a graph randomly -- end
 
-//print the created graph's adjacency matrix
 graph.printGraph();
-//Create an instance of a graph -- end
-
-//Do Topological Sorting on created graph
 console.log("Topological Sort of Graph");
 graph.topoSort();
