@@ -6,94 +6,134 @@
 <head>
     <meta charset="utf-8" />
     <style>
-        .button {
-            background-color: #4CAF50;
-            border: 2px solid #4CAF50 ;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            transition-duration: 0.2s;
-            cursor: pointer;
-            border-radius: 50%;
+        .container{
+            position: relative;
+            width: 100%;
+            max-width: 500px;
         }
-            .button:hover {
-                background-color: white;
-                color: #000000;
+            .container .nodes {
+                position: relative;
+                top: 0;
+                left: 700px;
             }
-            .button:focus {
-                background-color: white;
-                color: #000000;
+            .container .edges {
+                position: absolute;
+                top: 0;
+                left: 700px;
+            }
+            .container .button {
+                position: absolute;
+                background-color: #000;
+                border: 2px solid #000;
+                color: white;
+                height: 40px;
+                width: 40px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 14px;
+                margin: 4px 2px;
+                transition-duration: 0.2s;
+                cursor: pointer;
+                border-radius: 50%;
+            }
+                .container .button:hover {
+                    background-color: white;
+                    color: #000000;
+                }
+                .container .button:focus {
+                    background-color: white;
+                    color: #000000;
+                }
+            .container .button0 {
+                top: 54px;
+                left: 897px;
+            }
+            .container .button1 {
+                top: 114px;
+                left:794px;
+            }
+            .container .button2 {
+                top: 74.5px;
+                left: 1014.5px;
+            }
+            .container .button3 {
+                top: 226.2px;
+                left: 753.2px;
+            }
+            .container .button4 {
+                top: 166px;
+                left: 1092px;
+            }
+            .container .button5 {
+                top: 338px;
+                left: 795px;
+            }
+            .container .button6 {
+                top: 285px;
+                left: 1092px;
+            }
+            .container .button7 {
+                top: 398px;
+                left: 898px;
+            }
+            .container .button8 {
+                top: 377px;
+                left: 1016px;
             }
     </style>
+
     <title></title>
 </head>
 <body>
     <script src="JavaScript1.js"></script>
 
-    <table cellspacing="50">
-        
-        <tr>
-            <td>
-            </td>
-            <td>
-            </td>
-            <td>
-                <button class="button button0">0</button>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                <button class="button button1">1</button>
-            </td>
-            <td></td>
-            <td>
-                <button class="button button2">2</button>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <button class="button button3">3</button>
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-                <button class="button button4">4</button>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <button class="button button5">5</button>
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-                <button class="button button6">6</button>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                <button class="button button7">7</button>
-            </td>
-            <td></td>
-            <td>
-                <button class="button button8">8</button>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td>
-                <button class="button button9">9</button>
-            </td>
-        </tr>
-    </table>
+    <div class="container">
+        <img src="Graph Images/0_1.png" class="edges" />
+        <img src="Graph Images/0_2.png" class="edges" />
+        <img src="Graph Images/0_3.png" class="edges" />
+        <img src="Graph Images/0_4.png" class="edges" />
+        <img src="Graph Images/0_5.png" class="edges" />
+        <img src="Graph Images/0_6.png" class="edges" />
+        <img src="Graph Images/0_7.png" class="edges" />
+        <img src="Graph Images/0_8.png" class="edges" />
+        <img src="Graph Images/1_2.png" class="edges" />
+        <img src="Graph Images/1_3.png" class="edges" />
+        <img src="Graph Images/1_4.png" class="edges" />
+        <img src="Graph Images/1_5.png" class="edges" />
+        <img src="Graph Images/1_6.png" class="edges" />
+        <img src="Graph Images/1_7.png" class="edges" />
+        <img src="Graph Images/1_8.png" class="edges" />
+        <img src="Graph Images/2_3.png" class="edges" />
+        <img src="Graph Images/2_4.png" class="edges" />
+        <img src="Graph Images/2_5.png" class="edges" />
+        <img src="Graph Images/2_6.png" class="edges" />
+        <img src="Graph Images/2_7.png" class="edges" />
+        <img src="Graph Images/2_8.png" class="edges" />
+        <img src="Graph Images/3_4.png" class="edges" />
+        <img src="Graph Images/3_5.png" class="edges" />
+        <img src="Graph Images/3_6.png" class="edges" />
+        <img src="Graph Images/3_7.png" class="edges" />
+        <img src="Graph Images/3_8.png" class="edges" />
+        <img src="Graph Images/4_5.png" class="edges" />
+        <img src="Graph Images/4_6.png" class="edges" />
+        <img src="Graph Images/4_7.png" class="edges" />
+        <img src="Graph Images/4_8.png" class="edges" />
+        <img src="Graph Images/5_6.png" class="edges" />
+        <img src="Graph Images/5_7.png" class="edges" />
+        <img src="Graph Images/5_8.png" class="edges" />
+        <img src="Graph Images/6_7.png" class="edges" />
+        <img src="Graph Images/6_8.png" class="edges" />
+        <img src="Graph Images/7_8.png" class="edges" />
+        <button class="button button0">0</button>
+        <button class="button button1">1</button>
+        <button class="button button2">2</button>
+        <button class="button button3">3</button>
+        <button class="button button4">4</button>
+        <button class="button button5">5</button>
+        <button class="button button6">6</button>
+        <button class="button button7">7</button>
+        <button class="button button8">8</button>
+    </div>
 </body>
 </html>
