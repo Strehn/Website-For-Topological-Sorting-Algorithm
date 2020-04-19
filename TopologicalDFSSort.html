@@ -29,7 +29,9 @@
             NumNodes = parseInt(stemp, 10);
             createPseudocodeTable(myPseudocodeTableId);
             appendPseudocode(myPseudocodeTableId, "\n Press the node that goes onto the stack next. \n Click on the Show Me Button for the final solution. \n Click on the hint button for a hint. \n");
-
+            showElement("showHint", "showHint");
+            showElement("Reset", "Reset");
+            showElement("ShowSolution", "ShowSolution");
         }
 
         // Function to say the text on screen at start
@@ -542,7 +544,7 @@
 </head>
 
 
-<body onload="welcome()" data-gr-c-s-loaded="true">
+<body onload=welcome() data-gr-c-s-loaded="true">
     <!-- Create The Header -->
     <script>createHeader("Topological Sort (DFS)");</script>
 
