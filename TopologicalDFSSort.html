@@ -20,6 +20,37 @@
 
     <!-- Here is where we can make our own "script" It is in Javascript-->
     <script type="text/javascript">//Create Stack Class and functions
+
+        // ----- Variables -----
+        var NumNodes = "";
+        var stemp = "";
+        var myTableID = "";
+        var myPseudocodeTableId = "myPseudocodeTable";
+        var FSolution = "0";
+
+        // Function to generate Pseudocode table and unhide the solution buttons
+        function showNeeded() {
+            stemp = String(document.getElementById("NumNodes").value);
+            NumNodes = parseInt(stemp, 10);
+            createPseudocodeTable(myPseudocodeTableId);
+            appendPseudocode(myPseudocodeTableId, "\n Press the node that goes onto the stack next. \n Click on the Show Me Button for the final solution. \n Click on the hint button for a hint. \n");
+            showElement("guess");
+            showElement("showHint");
+            showElement("Reset");
+            showElement("showSolution");
+
+        }
+
+        // Function to show the next hint 
+        function showHint() {
+            
+        }
+
+        // function to show the final solution
+        function showSolution() {
+
+        }
+
         class Stack {
 
             //Stack class is contructed with an empty array
@@ -189,6 +220,7 @@
 
         //Create an instance of a graph randomly
         function CreateGraph() {
+            showNeeded(); // creates the pseudocode table
             var arraySize = Math.floor(Math.random() * (10 - 4) + 4); //This will be user choice
             var graph = new Graph(arraySize);
 
@@ -218,16 +250,200 @@
 
         //Create an instance of a graph randomly -- end
 
+        // GIVEN BY DR. BC --
+        // --
+        function deleteMyTable(myTableId) {
+            var element = document.getElementById(myTableId);
+            if (element != null)
+                element.parentNode.removeChild(element);
+        }
+
+        function createPseudocodeTable(myTableId) {
+            deleteMyTable(myTableId);
+            var myTable = document.createElement("TABLE");
+            myTable.setAttribute("id", myTableId);
+            myTable.style.whiteSpace = "pre";
+            //myTable.setAttribute("border", "1px solid black");
+            document.body.appendChild(myTable);
+
+            var newRow = document.createElement("TR");
+            newRow.setAttribute("id", "myTr");
+            myTable.appendChild(newRow);
+
+            var myCell = document.createElement("TD");
+            myCell.style.fontWeight = 'bold';
+            var t = document.createTextNode("Pseudocode");
+            myCell.appendChild(t);
+            newRow.appendChild(myCell);
+        }
+
+        var lastInstruction = "";
+
+        function appendPseudocode(myTableId, newInstruction) {
+            if (lastInstruction != newInstruction)
+                sayIt(newInstruction);
+            lastInstruction = newInstruction;
+            var myTable = document.getElementById(myTableId);
+
+            var newRow = document.createElement("TR");
+            newRow.setAttribute("id", "myTr");
+            myTable.appendChild(newRow);
+
+            var myCell = document.createElement("TD");
+
+            var t = document.createTextNode("  " + newInstruction);
+            myCell.appendChild(t);
+            newRow.appendChild(myCell);
+        }
+
+        function showElement(id, newText) {
+            var itemToShow = document.getElementById(id);
+            itemToShow.style.visibility = "visible";
+            itemToShow.disabled = false;
+            if (newText != 'undefined')
+                itemToShow.value = newText;
+        }
+
+        function hideElement(id) {
+            //Note: visibility:hidden means that the contents of the element will be invisible, but the element stays in its original position and size.
+            //      display:none hides the entire element.
+            var itemToHide = document.getElementById(id);
+            itemToHide.style.visibility = "hidden";
+            itemToHide.disabled = true;
+        }
+
+
+        var mute = false;
+
+        var lastUtterance = "";
+
+        function muteSound() {
+            mute = !mute;
+            var element = document.getElementById("muteButton");
+            if (mute) {
+                element.style.backgroundColor = "#F1B300";
+                window.speechSynthesis.cancel();
+            }
+            else
+                element.style.backgroundColor = "#808080";
+        }
+
+        function reallySayIt(inputString) {
+            var msg = new SpeechSynthesisUtterance(inputString);
+            window.speechSynthesis.speak(msg);
+        }
+
+        function sayItAgain() {
+            var msg = "";
+            if (lastUtterance == "") {
+                msg = "I didn't say anything";
+            }
+            else {
+                msg = "I said, " + lastUtterance;
+            }
+
+            if (mute) {
+                msg = msg + ". By the way, I would be easier to hear if you didn't mute me.";
+            }
+            reallySayIt(msg);
+            //alert(msg);
+        }
+
+        function sayIt(inputString) {
+            lastUtterance = inputString;
+            if (!mute) {
+                reallySayIt(inputString);
+            }
+        }
+
+        function createHeader(pageTitle) {
+            var headerTableId = "HeaderTableID";
+            deleteMyTable(headerTableId);
+            var x = document.createElement("TABLE");
+            x.setAttribute("id", headerTableId);
+            x.style.backgroundColor = "#808080";
+            x.style["width"] = "100%";
+            document.body.appendChild(x);
+            var newRow = document.createElement("TR");
+            newRow.setAttribute("id", "myTr");
+            x.appendChild(newRow);
+            var mycell;
+            var cellContent;
+            var img;
+
+            mycell = document.createElement("TD");
+            mycell.style["width"] = "5%";
+            newRow.appendChild(mycell);
+
+            mycell = document.createElement("TD");
+            mycell.style.textAlign = "center";
+            mycell.style["width"] = "8%";
+            cellContent = document.createElement('a');
+            cellContent.href = "https://www.uidaho.edu/engr/our-people/julie-beeston";
+            img = document.createElement('img');
+            img.src = "../images/drbc.gif";
+            img.style["width"] = "100%";
+            cellContent.style["width"] = "100%";
+            cellContent.appendChild(img);
+            mycell.appendChild(cellContent);
+
+            cellContent = document.createElement('button');
+            cellContent.innerHTML = 'Mute';
+            cellContent.setAttribute("id", "muteButton");
+            cellContent.onclick = function () { muteSound() };
+            cellContent.style["width"] = "100%";
+            cellContent.style["height"] = "100%";
+            mycell.appendChild(cellContent);
+            newRow.appendChild(mycell);
+
+            mycell = document.createElement("TD");
+            mycell.style["width"] = "74%";
+            mycell.style.textAlign = "center";
+            cellContent = document.createElement("H2");
+            cellContent.innerHTML = "Dr. BC (Dr. Julie Beeston) - UIdaho";
+            cellContent.style.color = "#FFFFFF";
+            mycell.appendChild(cellContent);
+            cellContent = document.createElement("H2");
+            cellContent.innerHTML = pageTitle;
+            cellContent.style.color = "#FFFFFF";
+            mycell.appendChild(cellContent);
+            newRow.appendChild(mycell);
+
+            mycell = document.createElement("TD");
+            mycell.style.textAlign = "center";
+            mycell.style["width"] = "8%";
+            cellContent = document.createElement('a');
+            cellContent.href = "https://www.uidaho.edu/";
+            img = document.createElement('img');
+            img.src = "../images/julie-beeston.jpg";
+            img.style["width"] = "100%";
+            cellContent.style["width"] = "100%";
+            cellContent.appendChild(img);
+            mycell.appendChild(cellContent);
+
+            cellContent = document.createElement('button');
+            cellContent.innerHTML = 'What?';
+            cellContent.setAttribute("id", "repeteButton");
+            cellContent.onclick = function () { sayItAgain() };
+            cellContent.style["width"] = "100%";
+            cellContent.style["height"] = "100%";
+            mycell.appendChild(cellContent);
+            newRow.appendChild(mycell);
+
+            mycell = document.createElement("TD");
+            mycell.style["width"] = "5%";
+            newRow.appendChild(mycell);
+        }
+
+        // END OF STUFF GIVEN BY DR. BC
+
+
         //console.log("Topological Sort of Graph");
         //graph.topoSort()
         ;</script>
 
     <!--Used to position and display graph-->
     <style>
-
-
-
-
 
         .container {
             position: relative;
@@ -360,7 +576,7 @@
         <!-- Button for how many elements in graph -->
         <label for="NumNodes">Enter the number of nodes:</label><br>
         <br />
-        <input type="number" step="1" pattern="\d+" />
+        <input type="text" id="NumNodes" name="NumNodes">
 
         <p> Once finished, click the "Generate Graph" button </p>
     </form>
@@ -390,6 +606,11 @@
 
     <!-- Button to show final solution -->
     <input style="visibility:hidden;" type="button" id="ShowSolution" value="ShowMe" onclick="ShowSolution()" enabled>
+
+    <!-- Given by Dr. BC -->
+    <input style="visibility:hidden;" type="button" id="ButtonShowMe" value="ButtonShowMe" onclick="ShowSolution()" enabled>
+    <input style="visibility:hidden;" type="button" id="ButtonYes" value="ButtonYes" onclick="ShowSolution()" enabled>
+    <input style="visibility:hidden;" type="button" id="ButtonNo" value="ButtonNo" onclick="ShowSolution()" enabled>
 
     <!--Dispaly graph but it's initially hidden-->
     <div class="container">
