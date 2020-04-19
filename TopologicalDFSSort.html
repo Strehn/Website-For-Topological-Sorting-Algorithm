@@ -11,7 +11,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <!-- Chrome browser will display response in the form of html page by using above line. -->
-
     <!-- Here is where we can make our own "script" It is in Javascript-->
     <script type="text/javascript">
         //Create Stack Class and functions
@@ -75,7 +74,7 @@
             }
         }
 
-        //Function that adds a given vertex to the map object as a key 
+        //Function that adds a given vertex to the map object as a key
         Graph.prototype.addVertex = function (vertex) {
 
             this.AdjList.set(vertex, []);
@@ -165,32 +164,152 @@
         }
         //Create Graph class and function -- end
 
+        function ClearGraph() {
 
-        //Create an instance of a graph randomly 
-        var arraySize = Math.floor(Math.random() * (11 - 4) + 4); //This will be user choice
-        var graph = new Graph(arraySize);
+            var arraySize = 9;
+            for (var i = 0; i < arraySize; i++) {
 
-        for (var i = 0; i < arraySize; i++) {
+                var idNode = "Node" + i;
+                var x = document.getElementById(idNode).style.visibility = "hidden";
 
-            graph.addVertex(i);
-        }
-        for (var i = 0; i < arraySize; i++) {
+                for (var j = i + 1; j < arraySize; j++) {
 
-            for (var j = i + 1; j < arraySize; j++) {
-
-                if (Math.floor(Math.random() * 101) < 35) {
-
-                    graph.addEdge(i, j);
+                    var idEdge = "Edge" + i + "_" + j;
+                    var y = document.getElementById(idEdge).style.visibility = "hidden";
                 }
             }
+
+        }
+
+        //Create an instance of a graph randomly
+        function CreateGraph() {
+            var arraySize = Math.floor(Math.random() * (10 - 4) + 4); //This will be user choice
+            var graph = new Graph(arraySize);
+
+            for (var i = 0; i < arraySize; i++) {
+
+                graph.addVertex(i);
+                console.log(i);
+                var idNode = "Node" + i;
+                var x = document.getElementById(idNode).style.visibility = "visible";
+
+            }
+            for (var i = 0; i < arraySize; i++) {
+
+                for (var j = i + 1; j < arraySize; j++) {
+
+                    if (Math.floor(Math.random() * 101) < 35) {
+
+                        graph.addEdge(i, j);
+                        var idEdge = "Edge" + i + "_" + j;
+                        var y = document.getElementById(idEdge).style.visibility = "visible"; 
+                    }
+                }
+            }
+
+        //graph.printGraph();
         }
 
         //Create an instance of a graph randomly -- end
 
-        graph.printGraph();
-        console.log("Topological Sort of Graph");
-        graph.topoSort();
+        //console.log("Topological Sort of Graph");
+        //graph.topoSort()
+;
     </script>
+
+    <!--Used to position and display graph-->
+    <style>
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+        }
+
+            .container .nodes {
+                position: relative;
+                top: 0;
+                left: 700px;
+            }
+
+            .container .edges {
+                position: absolute;
+                top: 0;
+                left: 700px;
+            }
+
+            .container .button {
+                position: absolute;
+                background-color: #000;
+                border: 2px solid #000;
+                color: white;
+                height: 40px;
+                width: 40px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 14px;
+                margin: 4px 2px;
+                transition-duration: 0.2s;
+                cursor: pointer;
+                border-radius: 50%;
+            }
+
+                .container .button:hover {
+                    background-color: white;
+                    color: #000000;
+                }
+
+                .container .button:focus {
+                    background-color: white;
+                    color: #000000;
+                }
+
+            .container .button0 {
+                top: 54px;
+                left: 897px;
+            }
+
+            .container .button1 {
+                top: 114px;
+                left: 794px;
+            }
+
+            .container .button2 {
+                top: 74.5px;
+                left: 1014.5px;
+            }
+
+            .container .button3 {
+                top: 226.2px;
+                left: 753.2px;
+            }
+
+            .container .button4 {
+                top: 166px;
+                left: 1092px;
+            }
+
+            .container .button5 {
+                top: 338px;
+                left: 795px;
+            }
+
+            .container .button6 {
+                top: 285px;
+                left: 1092px;
+            }
+
+            .container .button7 {
+                top: 398px;
+                left: 898px;
+            }
+
+            .container .button8 {
+                top: 377px;
+                left: 1016px;
+            }
+    </style>
+    <!--Used to position and display graph .. end-->
 </head>
 
 
@@ -237,7 +356,8 @@
     </form>
 
     <!-- This is the "start button" and when clicked it gets the number of nodes then generates the graph -->
-    <input style="visibility:visible;" type="button" id="GraphSearch" value="Generate Graph" onclick="getNodes()" enabled="">
+    <!--<input style="visibility:visible;" type="button" id="GraphSearch" value="Generate Graph" onclick="CreateGraph()" enabled="">-->
+    <button onclick="ClearGraph(); CreateGraph()">Generate Graph</button>
 
     <br />
     <br />
@@ -265,6 +385,55 @@
 
     <input style="visibility:hidden;" type="button" id="ButtonNo" value="No" onclick="choseNo()" disabled>
 
+    <!--Dispaly graph but it's initially hidden-->
+    <div class="container">
+        <img src="Graph Images/0_1.png" class="edges" id="Edge0_1" style="visibility:hidden" />
+        <img src="Graph Images/0_2.png" class="edges" id="Edge0_2" style="visibility:hidden" />
+        <img src="Graph Images/0_3.png" class="edges" id="Edge0_3" style="visibility:hidden" />
+        <img src="Graph Images/0_4.png" class="edges" id="Edge0_4" style="visibility:hidden" />
+        <img src="Graph Images/0_5.png" class="edges" id="Edge0_5" style="visibility:hidden" />
+        <img src="Graph Images/0_6.png" class="edges" id="Edge0_6" style="visibility:hidden" />
+        <img src="Graph Images/0_7.png" class="edges" id="Edge0_7" style="visibility:hidden" />
+        <img src="Graph Images/0_8.png" class="edges" id="Edge0_8" style="visibility:hidden" />
+        <img src="Graph Images/1_2.png" class="edges" id="Edge1_2" style="visibility:hidden" />
+        <img src="Graph Images/1_3.png" class="edges" id="Edge1_3" style="visibility:hidden" />
+        <img src="Graph Images/1_4.png" class="edges" id="Edge1_4" style="visibility:hidden" />
+        <img src="Graph Images/1_5.png" class="edges" id="Edge1_5" style="visibility:hidden" />
+        <img src="Graph Images/1_6.png" class="edges" id="Edge1_6" style="visibility:hidden" />
+        <img src="Graph Images/1_7.png" class="edges" id="Edge1_7" style="visibility:hidden" />
+        <img src="Graph Images/1_8.png" class="edges" id="Edge1_8" style="visibility:hidden" />
+        <img src="Graph Images/2_3.png" class="edges" id="Edge2_3" style="visibility:hidden" />
+        <img src="Graph Images/2_4.png" class="edges" id="Edge2_4" style="visibility:hidden" />
+        <img src="Graph Images/2_5.png" class="edges" id="Edge2_5" style="visibility:hidden" />
+        <img src="Graph Images/2_6.png" class="edges" id="Edge2_6" style="visibility:hidden" />
+        <img src="Graph Images/2_7.png" class="edges" id="Edge2_7" style="visibility:hidden" />
+        <img src="Graph Images/2_8.png" class="edges" id="Edge2_8" style="visibility:hidden" />
+        <img src="Graph Images/3_4.png" class="edges" id="Edge3_4" style="visibility:hidden" />
+        <img src="Graph Images/3_5.png" class="edges" id="Edge3_5" style="visibility:hidden" />
+        <img src="Graph Images/3_6.png" class="edges" id="Edge3_6" style="visibility:hidden" />
+        <img src="Graph Images/3_7.png" class="edges" id="Edge3_7" style="visibility:hidden" />
+        <img src="Graph Images/3_8.png" class="edges" id="Edge3_8" style="visibility:hidden" />
+        <img src="Graph Images/4_5.png" class="edges" id="Edge4_5" style="visibility:hidden" />
+        <img src="Graph Images/4_6.png" class="edges" id="Edge4_6" style="visibility:hidden" />
+        <img src="Graph Images/4_7.png" class="edges" id="Edge4_7" style="visibility:hidden" />
+        <img src="Graph Images/4_8.png" class="edges" id="Edge4_8" style="visibility:hidden" />
+        <img src="Graph Images/5_6.png" class="edges" id="Edge5_6" style="visibility:hidden" />
+        <img src="Graph Images/5_7.png" class="edges" id="Edge5_7" style="visibility:hidden" />
+        <img src="Graph Images/5_8.png" class="edges" id="Edge5_8" style="visibility:hidden" />
+        <img src="Graph Images/6_7.png" class="edges" id="Edge6_7" style="visibility:hidden" />
+        <img src="Graph Images/6_8.png" class="edges" id="Edge6_8" style="visibility:hidden" />
+        <img src="Graph Images/7_8.png" class="edges" id="Edge7_8" style="visibility:hidden" />
+        <button class="button button0" id="Node0" style="visibility:hidden">0</button>
+        <button class="button button1" id="Node1" style="visibility:hidden">1</button>
+        <button class="button button2" id="Node2" style="visibility:hidden">2</button>
+        <button class="button button3" id="Node3" style="visibility:hidden">3</button>
+        <button class="button button4" id="Node4" style="visibility:hidden">4</button>
+        <button class="button button5" id="Node5" style="visibility:hidden">5</button>
+        <button class="button button6" id="Node6" style="visibility:hidden">6</button>
+        <button class="button button7" id="Node7" style="visibility:hidden">7</button>
+        <button class="button button8" id="Node8" style="visibility:hidden">8</button>
+    </div>
+    <!--Display graph, but it's initially hidden .. end-->
 </body>
 
 </html>
