@@ -21,7 +21,8 @@
         var stemp = "";
         var myTableID = "";
         var myPseudocodeTableId = "myPseudocodeTable";
-        var FSolution = "0";
+        var FSolution = "012345";
+        var hints = 0;
 
         // Function to generate Pseudocode table and unhide the solution buttons
         function showNeeded() {
@@ -41,14 +42,32 @@
 
         // Function to show the next hint
         function showHint() {
-            appendPseudocode(myPseudocodeTableId, "\n Hint: ");
+            if (hints == 0) {
+                appendPseudocode(myPseudocodeTableId, "\n Hint1: ");
+            }
+            if (hints == 1) {
+                appendPseudocode(myPseudocodeTableId, "\n Hint2: ");
+            }
+            if (hints == 2) {
+                appendPseudocode(myPseudocodeTableId, "\n Hint3: ");
+            }
+            if (hints == 3) {
+                appendPseudocode(myPseudocodeTableId, "\n Hint4: ");
+            }
+            if (hints == 4) {
+                appendPseudocode(myPseudocodeTableId, "\n Hint5: \n Another Hint will show the final solution");
+            }
+            if (hints == 5) {
+                showSolution();
+            }
 
+            hints++;
         }
 
         // function to show the final solution
         function showSolution() {
             appendPseudocode(myPseudocodeTableId, "\n Final Solution: ");
-
+            appendPseudocode(myPseudocodeTableId, FSolution);
         }
 
         class Stack {
