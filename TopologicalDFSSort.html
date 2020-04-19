@@ -11,9 +11,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <!-- Chrome browser will display response in the form of html page by using above line. -->
+    <!-- We need these for the header things and pseudocode table Dr BC wants us to include-->
+    <link rel="stylesheet" href="./general.css">
+    <script type="text/javascript" src="../general.js"></script>
+    <script type="text/javascript" src="../tableFunctions.js"></script>
+    <script type="text/javascript" src="../headerFunction.js"></script>
+    <script type="text/javascript" src="../pseudocodeFunctions.js"></script>
+
     <!-- Here is where we can make our own "script" It is in Javascript-->
-    <script type="text/javascript">
-        //Create Stack Class and functions
+    <script type="text/javascript">//Create Stack Class and functions
         class Stack {
 
             //Stack class is contructed with an empty array
@@ -202,23 +208,27 @@
 
                         graph.addEdge(i, j);
                         var idEdge = "Edge" + i + "_" + j;
-                        var y = document.getElementById(idEdge).style.visibility = "visible"; 
+                        var y = document.getElementById(idEdge).style.visibility = "visible";
                     }
                 }
             }
 
-        //graph.printGraph();
+            //graph.printGraph();
         }
 
         //Create an instance of a graph randomly -- end
 
         //console.log("Topological Sort of Graph");
         //graph.topoSort()
-;
-    </script>
+        ;</script>
 
     <!--Used to position and display graph-->
     <style>
+
+
+
+
+
         .container {
             position: relative;
             width: 100%;
@@ -317,6 +327,8 @@
     <!-- Create The Header -->
     <script>createHeader("Topological Sort (DFS)");</script>
 
+    <table id="HeaderTableID" style="background-color: rgb(128, 128, 128); width: 100%;"></table>
+
     <!-- Text About the Topological Sort @ the top -->
     <p>
         This is the
@@ -340,8 +352,6 @@
         <br />
         <br />
     </p>
-
-    <table id="HeaderTableID" style="background-color: rgb(128, 128, 128); width: 100%;"></table>
 
     <script>//welcome();</script>
 
@@ -376,14 +386,10 @@
     <input style="visibility:hidden;" type="button" id="showHint" value="Show Hint" onclick="showHints()" enabled>
 
     <!-- Button to reset the algorithm -->
-    <input style="visibility:hidden;" type="button" id="ButtonReset" value="Reset" onclick="location.reload()" enabled>
+    <input style="visibility:hidden;" type="button" id="Reset" value="Reset" onclick="location.reload()" enabled>
 
-    <!-- Button to show hint -->
-    <input style="visibility:hidden;" type="button" id="ButtonShowMe" value="Hint" onclick="nextStep()" disabled>
-
-    <input style="visibility:hidden;" type="button" id="ButtonYes" value="Yes" onclick="choseYes()" disabled>
-
-    <input style="visibility:hidden;" type="button" id="ButtonNo" value="No" onclick="choseNo()" disabled>
+    <!-- Button to show final solution -->
+    <input style="visibility:hidden;" type="button" id="ShowSolution" value="ShowMe" onclick="ShowSolution()" enabled>
 
     <!--Dispaly graph but it's initially hidden-->
     <div class="container">
