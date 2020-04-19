@@ -40,11 +40,13 @@
 
         // Function to show the next hint
         function showHint() {
+            appendPseudocode(myPseudocodeTableId, "\n Hint: ");
 
         }
 
         // function to show the final solution
         function showSolution() {
+            appendPseudocode(myPseudocodeTableId, "\n Final Solution: ");
 
         }
 
@@ -891,13 +893,13 @@
     <br />
 
     <!-- Button for toggeling show hint  -->
-    <input style="visibility:hidden;" type="button" id="showHint" value="Show Hint" onclick="showHints()" enabled>
+    <input style="visibility:hidden;" type="button" id="showHint" value="Show Hint" onclick="showHint()" enabled>
 
     <!-- Button to reset the algorithm -->
     <input style="visibility:hidden;" type="button" id="Reset" value="Reset" onclick="location.reload()" enabled>
 
     <!-- Button to show final solution -->
-    <input style="visibility:hidden;" type="button" id="ShowSolution" value="ShowMe" onclick="ShowSolution()" enabled>
+    <input style="visibility:hidden;" type="button" id="ShowSolution" value="ShowMe" onclick="showSolution()" enabled>
 
     <!-- Given by Dr. BC -->
     <input style="visibility:hidden;" type="button" id="ButtonShowMe" value="ButtonShowMe" onclick="ShowSolution()" enabled>
