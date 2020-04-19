@@ -182,14 +182,13 @@
         }
 
         //Create an instance of a graph randomly
-        function CreateGraph() {
-            var arraySize = Math.floor(Math.random() * (10 - 4) + 4); //This will be user choice
+        function CreateGraph(arraySize) {
+            //var arraySize = Math.floor(Math.random() * (10 - 4) + 4); //This will be user choice
             var graph = new Graph(arraySize);
 
             for (var i = 0; i < arraySize; i++) {
 
                 graph.addVertex(i);
-                console.log(i);
                 var idNode = "Node" + i;
                 var x = document.getElementById(idNode).style.visibility = "visible";
 
@@ -207,7 +206,7 @@
                 }
             }
 
-        //graph.printGraph();
+        graph.printGraph();
         }
 
         //Create an instance of a graph randomly -- end
@@ -347,17 +346,27 @@
 
     <form>
 
-        <!-- Button for how many elements in graph -->
-        <label for="NumNodes">Enter the number of nodes:</label><br>
-        <br />
-        <input type="number" step="1" pattern="\d+" />
+        <!-- Button for how many elements in graph
+    <label for="NumNodes">Enter the number of nodes:</label><br>
+    <br />
+    <input type="number" step="1" pattern="\d+" />
+        -->
 
         <p> Once finished, click the "Generate Graph" button </p>
     </form>
 
     <!-- This is the "start button" and when clicked it gets the number of nodes then generates the graph -->
     <!--<input style="visibility:visible;" type="button" id="GraphSearch" value="Generate Graph" onclick="CreateGraph()" enabled="">-->
-    <button onclick="ClearGraph(); CreateGraph()">Generate Graph</button>
+    <label for="noNodes">Choose the number of nodes:</label>
+    <select id="noNodes">
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+    </select>
+    <button onclick="ClearGraph(); CreateGraph(document.getElementById('noNodes').value)">New Graph</button>
 
     <br />
     <br />
