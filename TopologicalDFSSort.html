@@ -24,9 +24,11 @@
         var FSolution = "01234" // keeps track of the final solution for a graph
         var hints = 0;
 
+        var lastButton; //keeps track of the last node button selected
+
         // Function to generate Pseudocode table and unhide the solution buttons
         function showNeeded() {
-            stemp = String(document.getElementById("NumNodes").value);
+            stemp = String(document.getElementById("noNodes").value);
             NumNodes = parseInt(stemp, 10);
             createPseudocodeTable(myPseudocodeTableId);
             appendPseudocode(myPseudocodeTableId, "\n Press the node that goes onto the stack next. \n Click on the Show Me Button for the final solution. \n Click on the hint button for a hint. \n");
@@ -46,7 +48,7 @@
                 appendPseudocode(myPseudocodeTableId, "\n Hint1: Create a temporary stack. Mark the current node as visited.");
             }
             if (hints == 1) {
-                appendPseudocode(myPseudocodeTableId, "\n Hint2: Recursively call topological sorting for all its adjacent vertices, then push it to the stack (when all adjacent vertices are on stack). Note this step is same as Depth First Search in a recursive way.");
+                appendPseudocode(myPseudocodeTableId, "\n Hint2: Recursively call topological sorting for all its adjacent vertices, then push it to \nthe stack (when all adjacent vertices are on stack). Note this step is same as Depth First Search \nin a recursive way.");
             }
             if (hints == 2) {
                 appendPseudocode(myPseudocodeTableId, "\n Hint3: Push current vertex to stack which stores result.");
@@ -87,7 +89,7 @@
         //Function to push a given element onto the stack
         Stack.prototype.push = function (element) {
 
-            this.elements.push(element);
+             this.elements.push(element);
         }
 
         //Function that returns the top element from the stack
@@ -163,17 +165,21 @@
             }
         }
 
-        //Function that does Topological Sorting by callling the recursive Topological Sorting Utility function
-        Graph.prototype.topoSort = function () {
+        let stack = new Stack(); //create a new stack instance
 
-            let stack = new Stack(); //create a new stack instance
+        //Function that does Topological Sorting by callling the recursive Topological Sorting Utility function
+        Graph.prototype.topoSort = function (arraySize) {
 
             //Create a visted array that tells whether or not a vertex has been visited yet
             //initialize each entry to be false
             let visited = new Array(arraySize);
+            var myTable = document.getElementById("visitTable");
             for (var i = 0; i < arraySize; i++) {
                 visited[i] = false;
+                myTable.rows[0].cells[i].style.visibility = "visible";
+                myTable.rows[1].cells[i].style.visibility = "visible";
             }
+
 
             //For each vertex in the graph
             for (var i = 0; i < arraySize; i++) {
@@ -181,7 +187,7 @@
                 //check to see if that vertex has been visitied yet
                 if (visited[i] === false) {
 
-                    graph.topoSortUtil(i, visited, stack); //if it hasn't been visited yet, call the Topological Sorting Utility function
+                    this.topoSortUtil(i, visited); //if it hasn't been visited yet, call the Topological Sorting Utility function
                 }
             }
 
@@ -197,13 +203,28 @@
             }
         }
 
+        var vAdd = 0;
+        var vCheck = 0;
+        var visitOrder = [];
+        var pAdd = 0;
+        var pCheck = 0;
+        var pushOrder = [];
+
+        var cAdd = 0;
+        var cCheck = 0;
+        var clickOrder = [];
+
         //Function that uses recursion to do topological sorting
         //inputs are:
         //the vertex currently being visited, the visited array, and the stack
-        Graph.prototype.topoSortUtil = function (vertex, visited, stack) {
+        Graph.prototype.topoSortUtil = function (vertex, visited) {
 
             visited[vertex] = true; //mark that the current vertex has been visited
-
+            visitOrder[vAdd] = vertex;
+            vAdd++;
+            clickOrder[cAdd] = vertex;
+            console.log("Click Order: " + clickOrder[cAdd]);
+            cAdd++;
             var adjVertices = this.AdjList.get(vertex); //create a variable that holds the value (list of adjacent vertices) of the given key (vertex) from the map object, AdjList
 
             //for every value in the list of adjacent vertices
@@ -212,18 +233,61 @@
                 //Check if that adjacent vertices has already been visited
                 if (!visited[i]) {
 
-                    this.topoSortUtil(i, visited, stack); //if not, call the Topological Sort Utility to go visit that adjacent vertex
+                    this.topoSortUtil(i, visited); //if not, call the Topological Sort Utility to go visit that adjacent vertex
                 }
             }
 
             stack.push(vertex); //push the current vertex onto the stack once it hits a dead end (in other words, had no more adjacent vertices to visit)
+            pushOrder[pAdd] = vertex;
+            pAdd++;
+            if (clickOrder[cAdd - 1] != vertex) {
+                clickOrder[cAdd] = vertex;
+                console.log("Click Order: " + clickOrder[cAdd]);
+                cAdd++;
+            }
+            clickOrder[cAdd] = -1;
+            console.log("Click Order: " + clickOrder[cAdd]);
+            cAdd++;
         }
         //Create Graph class and function -- end
+
+
+        function UpdateVisitTable(vertex) {
+            
+            if (vertex == clickOrder[cCheck]) {
+                cCheck++;
+                var visitID = "TF" + vertex;
+                var myTable = document.getElementById("visitTable");
+                myTable.rows[1].cells[vertex].innerHTML = "t";
+            }
+            else {
+                console.log("Node " + vertex + " is not the next node to click");
+            }
+
+            lastButton = vertex;
+            //console.log("Last node button clicked: " + lastButton);
+        }
+
+        var stackSize = 0;
+        function UpdateStack(button) {
+
+            if (clickOrder[cCheck] == -1) {
+                cCheck++;
+                stackSize++;
+                var stackRow = "stackRow" + stackSize;
+                document.getElementById(stackRow).innerHTML = button;
+                document.getElementById(stackRow).style.visibility = "visible";
+            }
+            else {
+                console.log("Node " + button + " is not the next node that is added to the stack.");
+            }
+        }
 
         function ClearGraph() {
             showNeeded(); // creates the pseudocode table
 
             var arraySize = 9;
+            var myTable = document.getElementById("visitTable");
             for (var i = 0; i < arraySize; i++) {
 
                 var idNode = "Node" + i;
@@ -234,17 +298,29 @@
                     var idEdge = "Edge" + i + "_" + j;
                     var y = document.getElementById(idEdge).style.visibility = "hidden";
                 }
+
+                myTable.rows[1].cells[i].innerHTML = "f";
+                myTable.rows[0].cells[i].style.visibility = "hidden";
+                myTable.rows[1].cells[i].style.visibility = "hidden";
+                var j = i + 1;
+                var stackRow = "stackRow" + j;
+                document.getElementById(stackRow).style.visibility = "hidden";
+                lastButton = null;
+                stackSize = 0;
+                vAdd = 0;
+                vCheck = 0;
+                visitOrder = [];
+                pAdd = 0;
+                pCheck = 0;
+                pushOrder = [];
+                cAdd = 0;
+                cCheck = 0;
+                clickOrder = [];
             }
 
         }
 
-        //Create an instance of a graph randomly
         function CreateGraph(arraySize) {
-            //var arraySize = Math.floor(Math.random() * (10 - 4) + 4); //This will be user choice
-        }
-
-        function CreateGraph() {
-            var arraySize = Math.floor(Math.random() * (10 - 4) + 4); //This will be user choice
 
             var graph = new Graph(arraySize);
 
@@ -268,10 +344,11 @@
                 }
             }
 
+            document.getElementById("stackTable").style.visibility = "visible";
+            document.getElementById("StackButton").style.visibility = "visible";
 
-        graph.printGraph();
-            //graph.printGraph();
-
+            graph.printGraph();
+            graph.topoSort(arraySize);
         }
 
         //Create an instance of a graph randomly -- end
@@ -560,6 +637,18 @@
                 top: 377px;
                 left: 1016px;
             }
+
+        .stack {
+            position: relative;
+            top: 100px;
+            left: 1500px;
+        }
+
+        .visited {
+            position: relative;
+            top: 110px;
+            left: 1500px;
+        }
     </style>
     <!--Used to position and display graph .. end-->
 </head>
@@ -597,20 +686,6 @@
 
     <script>//welcome();</script>
 
-    <form>
-
-        <!-- Button for how many elements in graph
-        <label for="NumNodes">Enter the number of nodes:</label><br>
-        <br />
-        <input type="number" step="1" pattern="\d+" />
-            -->
-        <!-- Button for how many elements in graph -->
-        <label for="NumNodes">Enter the number of nodes:</label><br>
-        <br />
-        <input type="text" id="NumNodes" name="NumNodes">
-
-    </form>
-
     <!-- This is the "start button" and when clicked it gets the number of nodes then generates the graph -->
     <!--<input style="visibility:visible;" type="button" id="GraphSearch" value="Generate Graph" onclick="CreateGraph()" enabled="">-->
     <label for="noNodes">Choose the number of nodes:</label>
@@ -625,9 +700,6 @@
     <br />
     <p> Once finished, click the "Generate Graph" button </p>
     <button onclick="ClearGraph(); CreateGraph(document.getElementById('noNodes').value)">Create Graph</button>
-
-    <br />
-    <br />
 
     <!-- This keeps track of the guess the user makes on what node is added to the stack next-->
     <div id="guess" style="visibility:hidden;">
@@ -691,17 +763,58 @@
         <img src="Graph Images/6_7.png" class="edges" id="Edge6_7" style="visibility:hidden" />
         <img src="Graph Images/6_8.png" class="edges" id="Edge6_8" style="visibility:hidden" />
         <img src="Graph Images/7_8.png" class="edges" id="Edge7_8" style="visibility:hidden" />
-        <button class="button button0" id="Node0" style="visibility:hidden">0</button>
-        <button class="button button1" id="Node1" style="visibility:hidden">1</button>
-        <button class="button button2" id="Node2" style="visibility:hidden">2</button>
-        <button class="button button3" id="Node3" style="visibility:hidden">3</button>
-        <button class="button button4" id="Node4" style="visibility:hidden">4</button>
-        <button class="button button5" id="Node5" style="visibility:hidden">5</button>
-        <button class="button button6" id="Node6" style="visibility:hidden">6</button>
-        <button class="button button7" id="Node7" style="visibility:hidden">7</button>
-        <button class="button button8" id="Node8" style="visibility:hidden">8</button>
+        <button class="button button0" id="Node0" style="visibility:hidden" onclick="UpdateVisitTable(0)">0</button>
+        <button class="button button1" id="Node1" style="visibility:hidden" onclick="UpdateVisitTable(1)">1</button>
+        <button class="button button2" id="Node2" style="visibility:hidden" onclick="UpdateVisitTable(2)">2</button>
+        <button class="button button3" id="Node3" style="visibility:hidden" onclick="UpdateVisitTable(3)">3</button>
+        <button class="button button4" id="Node4" style="visibility:hidden" onclick="UpdateVisitTable(4)">4</button>
+        <button class="button button5" id="Node5" style="visibility:hidden" onclick="UpdateVisitTable(5)">5</button>
+        <button class="button button6" id="Node6" style="visibility:hidden" onclick="UpdateVisitTable(6)">6</button>
+        <button class="button button7" id="Node7" style="visibility:hidden" onclick="UpdateVisitTable(7)">7</button>
+        <button class="button button8" id="Node8" style="visibility:hidden" onclick="UpdateVisitTable(8)">8</button>
     </div>
     <!--Display graph, but it's initially hidden .. end-->
+
+    <ul class="stack" style="list-style-type:none;">
+        <li id="stackRow9" style="visibility:hidden"></li>
+        <li id="stackRow8" style="visibility:hidden"></li>
+        <li id="stackRow7" style="visibility:hidden"></li>
+        <li id="stackRow6" style="visibility:hidden"></li>
+        <li id="stackRow5" style="visibility:hidden"></li>
+        <li id="stackRow4" style="visibility:hidden"></li>
+        <li id="stackRow3" style="visibility:hidden"></li>
+        <li id="stackRow2" style="visibility:hidden"></li>
+        <li id="stackRow1" style="visibility:hidden"></li>
+        <li id="stackTable" style="visibility:hidden">Stack</li>
+    </ul>
+
+    <table id="visitTable" class="visited">
+        <tr>
+            <td id="visit0" style="visibility:hidden">0</td>
+            <td id="visit1" style="visibility:hidden">1</td>
+            <td id="visit2" style="visibility:hidden">2</td>
+            <td id="visit3" style="visibility:hidden">3</td>
+            <td id="visit4" style="visibility:hidden">4</td>
+            <td id="visit5" style="visibility:hidden">5</td>
+            <td id="visit6" style="visibility:hidden">6</td>
+            <td id="visit7" style="visibility:hidden">7</td>
+            <td id="visit8" style="visibility:hidden">8</td>
+        </tr>
+        <tr>
+            <td id="TF0" style="visibility:hidden">f</td>
+            <td id="TF1" style="visibility:hidden">f</td>
+            <td id="TF2" style="visibility:hidden">f</td>
+            <td id="TF3" style="visibility:hidden">f</td>
+            <td id="TF4" style="visibility:hidden">f</td>
+            <td id="TF5" style="visibility:hidden">f</td>
+            <td id="TF6" style="visibility:hidden">f</td>
+            <td id="TF7" style="visibility:hidden">f</td>
+            <td id="TF8" style="visibility:hidden">f</td>
+        </tr>
+    </table>
+
+    <button id="StackButton" style="visibility:hidden" onclick="UpdateStack(lastButton)">Add to Stack</button>
+    <button id="ShowMe" style="visibility:hidden">Show Me Next Step</button>
 </body>
 
 </html>
