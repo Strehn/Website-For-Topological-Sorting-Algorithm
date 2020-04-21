@@ -21,7 +21,6 @@
         var stemp = "";
         var myTableID = "";
         var myPseudocodeTableId = "myPseudocodeTable";
-        var myHintTable = "myHintTable";
         var FSolution = "01234" // keeps track of the final solution for a graph
         var hints = 0;
 
@@ -721,13 +720,12 @@
     <!-- Button to show final solution -->
     <input style="visibility:hidden;" type="button" id="ShowSolution" value="ShowMe" onclick="showSolution()" enabled>
 
-
     <!-- Given by Dr. BC -->
     <input style="visibility:hidden;" type="button" id="ButtonShowMe" value="ButtonShowMe" onclick="showSolution()" enabled>
     <input style="visibility:hidden;" type="button" id="ButtonYes" value="ButtonYes" onclick="ShowSolution()" enabled>
     <input style="visibility:hidden;" type="button" id="ButtonNo" value="ButtonNo" onclick="ShowSolution()" enabled>
 
-    <!--Display graph but it's initially hidden-->
+    <!--Dispaly graph but it's initially hidden-->
     <div class="container">
         <img src="Graph Images/0_1.png" class="edges" id="Edge0_1" style="visibility:hidden" />
         <img src="Graph Images/0_2.png" class="edges" id="Edge0_2" style="visibility:hidden" />
@@ -817,14 +815,6 @@
 
     <button id="StackButton" style="visibility:hidden" onclick="UpdateStack(lastButton)">Add to Stack</button>
     <button id="ShowMe" style="visibility:hidden">Show Me Next Step</button>
-
-    <p>
-        ----- PSEUDOCODE ---- <br />   topologicalDFS
-        <br /> Call DFS(G) to compute finish time v for each vertex
-        <br />  as each vertex is finished, insert it onto the front of a linked list
-        <br />  return the linked list of vertices
-    </p>
-
 </body>
 
 </html>
